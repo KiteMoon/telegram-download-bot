@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"io/ioutil"
 	"net/http"
 	"telegrame-kitemoon-bot/PareMessage"
@@ -10,7 +11,7 @@ import (
 
 func main() {
 	// API BOT token
-	tgToken := "xxx"
+	tgToken := "xxxxx"
 	getBotStatus, getBotStatusErr := http.Get("https://api.telegram.org/bot" + tgToken + "/getMe")
 	if getBotStatusErr != nil || getBotStatus.StatusCode != 200 {
 		fmt.Println("发生错误，无法连接到TG服务器")
@@ -33,5 +34,11 @@ func main() {
 	fmt.Println("机器人昵称:", getBotStatusBodyJson.Result.First_name)
 	fmt.Println("机器人用户名:", getBotStatusBodyJson.Result.Username)
 	fmt.Println("初始化成功")
-	PareMessage.PareMessageList(tgToken)
+	server := gin.Default()
+	server.POST("/", func(context *gin.Context) {
+
+		PareMessage.MessageType(context, tgToken)
+	})
+	server.Run(":14789")
+	//PareMessage.PareMessageList(tgToken)
 }

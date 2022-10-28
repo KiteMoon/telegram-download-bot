@@ -14,6 +14,7 @@ func SendMessage(chatId int, text, token string) {
 	SendMessageReqQuery := SendMessageReq.URL.Query()
 	SendMessageReqQuery.Add("text", text)
 	SendMessageReqQuery.Add("chat_id", strconv.Itoa(chatId))
+	SendMessageReqQuery.Add("parse_mode", "html")
 	SendMessageReq.URL.RawQuery = SendMessageReqQuery.Encode()
 	SendMessageRes, _ := http.DefaultClient.Do(SendMessageReq)
 
